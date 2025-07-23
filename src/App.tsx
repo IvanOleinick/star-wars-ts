@@ -14,9 +14,10 @@ function App() {
         <div>
             <StarWarsContext  value={{page,changePage:setPage}}>
                 <Header />
-            </StarWarsContext>
             <Main/>
             <Footer/>
+            </StarWarsContext>
+
         </div>
 
     )
