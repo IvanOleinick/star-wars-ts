@@ -56,6 +56,6 @@ export function loadCachedData<T>(key: string): T | null {
         return null;
     }
 
-    return item.value as T;
+    return item.value ;
 }
 
