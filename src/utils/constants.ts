@@ -49,12 +49,13 @@ export function saveData<T>(key:string, value:T, days:number) {
     localStorage.setItem(key, JSON.stringify(item));
 }
 
-export function loadCachedData<T>(key:string): T | null {
+export function loadCachedData<T>(key: string): T | null {
     const item = JSON.parse(localStorage.getItem(key) || 'null');
-    if (!item || Date.now() > item.expires) {
-        localStorage.removeItem(key);
+
+    if (Date.now() > item.expires) {
         return null;
     }
+
     return item.value as T;
 }
 

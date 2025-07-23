@@ -1,30 +1,29 @@
-import {baseUrl, loadCachedData, saveData, tag_base, tag_planets} from "../utils/constants.ts";
-import {useEffect, useState} from "react";
+import { baseUrl, loadCachedData, saveData, tag_base, tag_planets } from "../utils/constants.ts";
+import { useEffect, useState } from "react";
 
 const Contact = () => {
     const [planets, setPlanets] = useState<string[]>([]);
-    const STORAGE_KEY = 'planets';
+    const STORAGE_KEY = "planets";
 
     useEffect(() => {
         const cachedPlanets = loadCachedData<string[]>(STORAGE_KEY);
         if (cachedPlanets) {
             setPlanets(cachedPlanets);
-            return;
+        } else {
+            fetch(`${baseUrl}/${tag_base}/${tag_planets}`)
+                .then((res) => res.json())
+                .then((data: Array<{ name: string }>) => {
+                    const planetNames = data.map((planet) => planet.name);
+                    setPlanets(planetNames);
+                    saveData(STORAGE_KEY, planetNames, 30);
+                })
+                .catch((err) => console.error("Failed to fetch planets:", err));
         }
-
-        fetch(`${baseUrl}/${tag_base}/${tag_planets}`)
-            .then(res => res.json())
-            .then((data: Array<{ name: string }>) => {
-                const planetNames = data.map(planet => planet.name);
-                setPlanets(planetNames);
-                saveData(STORAGE_KEY, planetNames, 30);
-            })
-            .catch(err => console.error('Failed to fetch planets:', err));
     }, []);
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow space-y-4">
-            <form onSubmit={e => e.preventDefault()} className="space-y-4">
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
                 <div>
                     <label htmlFor="fname" className="block text-sm font-medium text-gray-700">
                         First Name
@@ -85,12 +84,11 @@ const Contact = () => {
                     <input
                         type="submit"
                         value="Submit"
-                        className="w-full bg-red-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-700 transition"
+                        className="w-full bg-red-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-700"
                     />
                 </div>
             </form>
         </div>
-
     );
 };
 
