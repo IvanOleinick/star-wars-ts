@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {baseUrl, tag_films} from "../utils/constants.ts";
+import Text from "./ui/Text.tsx";
 
 const OpeningCrawl = () => {
     const [openingCrawl, setOpeningCrawl] = useState('');
@@ -28,10 +29,8 @@ const OpeningCrawl = () => {
         )
     } else {
         return (
-            <>
-                <p className="text-[1.7em] text-justify leading-[1.6]"></p>
-                Loading...
-            </>
+            <Text>{openingCrawl}</Text>
+
         )
     }
 

@@ -2,11 +2,14 @@ import {baseUrl, id_person, tag_base, tag_peoples} from "../utils/constants.ts";
 import {saveData, loadCachedData} from "../utils/constants.ts";
 import {useEffect, useState} from "react";
 import type {Person} from "../utils/types";
+// import {useParams} from "react-router";
 
 
 const AboutMe = () => {
     const [aboutMe, setAboutMe] = useState<Partial<Person>>({});
     const STORAGE_KEY = 'aboutMe';
+    // const {heroId}=useParams();
+
 
     useEffect(() => {
         const cached = localStorage.getItem(STORAGE_KEY);
