@@ -1,25 +1,26 @@
 import {useParams} from "react-router";
 import {useContext, useEffect, useState} from "react";
-import {characters, saveData, loadCachedData} from "../utils/constants.ts";
+import {characters, saveData, loadCachedData, defaultHero} from "../utils/constants.ts";
 import type {Person} from "../utils/types.ts";
 import {StarWarsContext} from "../utils/context.ts";
+import ErrorPage from "./ErrorPage.tsx";
 
-const DEFAULT_HERO = "luke";
 
 const AboutMe = () => {
     const {heroId} = useParams();
-    const key = heroId && characters[heroId] ? heroId : DEFAULT_HERO;
+    const key = heroId ?? defaultHero
     const character = characters[key];
     const [aboutMe, setAboutMe] = useState<Partial<Person>>({});
     const {changeHero} = useContext(StarWarsContext);
 
 
     useEffect(() => {
+        if (!(key in characters)) return;
+        changeHero(key)
         const cached = loadCachedData<Person>(key);
 
         if (cached) {
             setAboutMe(cached)
-            changeHero(key);
             return;
         }
 
@@ -39,21 +40,13 @@ const AboutMe = () => {
                 };
                 setAboutMe(person);
                 saveData<Person>(key, person, 30);
-                changeHero(person.name);
 
             })
             .catch(err => console.error(err));
-    }, [heroId]);
+    }, [key]);
 
-    if (!aboutMe.name) {
-        return (
-            <p className="farGalaxy">
-                <span className="spinner-border spinner-border-sm"></span> Loading...
-            </p>
-        );
-    }
 
-    return (
+    return (key in characters) ? (
         <div className="flex justify-between items-start">
             <div className="text-[1.7em] text-justify leading-[1.6]">
                 {Object.entries(aboutMe).map(([k, v]) => {
@@ -64,7 +57,7 @@ const AboutMe = () => {
             </div>
             <img className="w-1/2" src={aboutMe.image} alt={aboutMe.name}/>
         </div>
-    );
+    ) : <ErrorPage/>;
 };
 
 export default AboutMe;

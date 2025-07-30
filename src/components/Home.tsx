@@ -4,20 +4,21 @@ import OpeningCrawl from "./OpeningCrawl.tsx";
 import {useParams} from "react-router";
 import {useContext, useEffect} from "react";
 import {StarWarsContext} from "../utils/context.ts";
-import {characters} from "../utils/constants.ts";
+import {characters, defaultHero} from "../utils/constants.ts";
+import ErrorPage from "./ErrorPage.tsx";
 
-const DEFAULT_HERO = "luke";
 
 const Home = () => {
     const {heroId} = useParams();
     const {changeHero} = useContext(StarWarsContext);
-    const key = heroId && characters[heroId] ? heroId : DEFAULT_HERO;
+    const key = heroId ??  defaultHero
 
     useEffect(() => {
+        if(!(key in characters)) return;
         changeHero(key)
-    },[key])
+    }, [key])
 
-    return (
+    return (key in characters) ? (
         <main className="clear-both">
             <Hero/>
             <DreamTeam/>
@@ -25,7 +26,7 @@ const Home = () => {
         </main>
 
 
-    );
+    ):<ErrorPage/>;
 };
 
 export default Home;
