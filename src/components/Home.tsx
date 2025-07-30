@@ -1,4 +1,3 @@
-import React from 'react';
 import Hero from "./Hero.tsx";
 import DreamTeam from "./DreamTeam.tsx";
 import OpeningCrawl from "./OpeningCrawl.tsx";

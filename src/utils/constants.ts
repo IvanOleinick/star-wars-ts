@@ -9,7 +9,7 @@ import friend7 from "../assets/friend7.jpg";
 import friend8 from "../assets/friend8.jpg";
 import friend9 from "../assets/friend9.jpg";
 import type {Character} from "./types";
-
+export const defaultHero="Luke Skywalker"
 export const baseUrl = 'https://sw-info-api.herokuapp.com'
 export const tag_base = '/v1'
 export const tag_peoples = '/peoples'

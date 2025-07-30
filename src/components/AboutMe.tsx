@@ -1,17 +1,17 @@
-import { useParams } from "react-router";
+import {useParams} from "react-router";
 import {useContext, useEffect, useState} from "react";
-import { characters, saveData, loadCachedData } from "../utils/constants.ts";
-import type { Person } from "../utils/types.ts";
+import {characters, saveData, loadCachedData} from "../utils/constants.ts";
+import type {Person} from "../utils/types.ts";
 import {StarWarsContext} from "../utils/context.ts";
 
 const DEFAULT_HERO = "luke";
 
 const AboutMe = () => {
-    const { heroId } = useParams();
+    const {heroId} = useParams();
     const key = heroId && characters[heroId] ? heroId : DEFAULT_HERO;
     const character = characters[key];
     const [aboutMe, setAboutMe] = useState<Partial<Person>>({});
-    const { setCurrentName } = useContext(StarWarsContext);
+    const {changeHero} = useContext(StarWarsContext);
 
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const AboutMe = () => {
 
         if (cached) {
             setAboutMe(cached)
-            setCurrentName(cached.name);
+            changeHero(cached.name);
             return;
         }
 
@@ -39,7 +39,7 @@ const AboutMe = () => {
                 };
                 setAboutMe(person);
                 saveData<Person>(key, person, 30);
-                setCurrentName(person.name);
+                changeHero(person.name);
 
             })
             .catch(err => console.error(err));
@@ -62,7 +62,7 @@ const AboutMe = () => {
                     return <p key={k}>{label}: {v}</p>;
                 })}
             </div>
-            <img className="w-1/2" src={aboutMe.image} alt={aboutMe.name} />
+            <img className="w-1/2" src={aboutMe.image} alt={aboutMe.name}/>
         </div>
     );
 };

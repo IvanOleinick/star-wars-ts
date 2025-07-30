@@ -1,8 +1,6 @@
 export interface SwContextValue {
-    page: string;
-    changePage: (page: string) => void;
-    currentName: string;
-    setCurrentName: (name: string) => void;
+    hero: string;
+    changeHero: (hero: string) => void;
 }
 
 export interface Person {
