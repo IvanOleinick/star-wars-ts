@@ -1,30 +1,32 @@
-import {baseUrl, id_person, tag_base, tag_peoples} from "../utils/constants.ts";
-import {saveData, loadCachedData} from "../utils/constants.ts";
-import {useEffect, useState} from "react";
-import type {Person} from "../utils/types";
-// import {useParams} from "react-router";
+import { useParams } from "react-router";
+import {useContext, useEffect, useState} from "react";
+import { characters, saveData, loadCachedData } from "../utils/constants.ts";
+import type { Person } from "../utils/types.ts";
+import {StarWarsContext} from "../utils/context.ts";
 
+const DEFAULT_HERO = "luke";
 
 const AboutMe = () => {
+    const { heroId } = useParams();
+    const key = heroId && characters[heroId] ? heroId : DEFAULT_HERO;
+    const character = characters[key];
     const [aboutMe, setAboutMe] = useState<Partial<Person>>({});
-    const STORAGE_KEY = 'aboutMe';
-    // const {heroId}=useParams();
+    const { setCurrentName } = useContext(StarWarsContext);
 
 
     useEffect(() => {
-        const cached = localStorage.getItem(STORAGE_KEY);
+        const cached = loadCachedData<Person>(key);
+
         if (cached) {
-            const data = loadCachedData<Person>(STORAGE_KEY);
-            if (data) {
-                setAboutMe(data);
-                return;
-            }
+            setAboutMe(cached)
+            setCurrentName(cached.name);
+            return;
         }
 
-        fetch(`${baseUrl}/${tag_base}/${tag_peoples}/${id_person}`)
+        fetch(character.url)
             .then(res => res.json())
             .then(data => {
-                const person = {
+                const person: Person = {
                     name: data.name,
                     gender: data.gender,
                     skin_color: data.skin_color,
@@ -33,20 +35,20 @@ const AboutMe = () => {
                     height: data.height,
                     mass: data.mass,
                     birth_year: data.birth_year,
-                    image: data.image,
+                    image: character.img,
                 };
-
                 setAboutMe(person);
-                saveData<Person>(STORAGE_KEY, person, 30);
+                saveData<Person>(key, person, 30);
+                setCurrentName(person.name);
+
             })
             .catch(err => console.error(err));
-    }, []);
+    }, [heroId]);
 
-    if (!aboutMe) {
+    if (!aboutMe.name) {
         return (
             <p className="farGalaxy">
-                <span className="spinner-border spinner-border-sm"></span>
-                Loading...
+                <span className="spinner-border spinner-border-sm"></span> Loading...
             </p>
         );
     }
@@ -54,21 +56,13 @@ const AboutMe = () => {
     return (
         <div className="flex justify-between items-start">
             <div className="text-[1.7em] text-justify leading-[1.6]">
-                {Object.entries(aboutMe).map(([key, value]) => {
-                    if (key === "image") return null;
-
-                    const label = key
-                        .replace(/_/g, ' ')
-                        .replace(/^\w/, c => c.toUpperCase());
-
-                    return (
-                        <p key={key}>
-                            {label}: {value}
-                        </p>
-                    );
+                {Object.entries(aboutMe).map(([k, v]) => {
+                    if (k === "image") return null;
+                    const label = k.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase());
+                    return <p key={k}>{label}: {v}</p>;
                 })}
             </div>
-            <img className="w-1/2" src={`/${aboutMe.image}`} alt={aboutMe.name}/>
+            <img className="w-1/2" src={aboutMe.image} alt={aboutMe.name} />
         </div>
     );
 };

@@ -9,13 +9,18 @@ import {StarWarsContext} from "./utils/context.ts";
 
 function App() {
     const [page, setPage] = useState(navItems[0]);
+    const [currentName, setCurrentName] = useState("Luke Skywalker");
+
 
     return (
         <div>
-            <StarWarsContext  value={{page,changePage:setPage}}>
-                <Header />
-            <Main/>
-            <Footer/>
+            <StarWarsContext
+                value={{page, changePage: setPage,
+                    currentName,
+                setCurrentName}}>
+                <Header/>
+                <Main/>
+                <Footer/>
             </StarWarsContext>
 
         </div>

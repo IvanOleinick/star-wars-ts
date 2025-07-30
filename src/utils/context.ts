@@ -4,5 +4,8 @@ import {navItems} from "./constants.ts";
 
 export const StarWarsContext =createContext<SwContextValue>({
     page:navItems[0],
-    changePage:(page:string)=> console.log(page)
+    changePage:(page:string)=> console.log(page),
+    currentName: "",
+    setCurrentName: () => {}
+
 });
