@@ -1,3 +1,5 @@
+import {characters} from "../utils/constants.ts";
+
 interface FriendsProps {
     friend: string;
     className?: string;
@@ -5,7 +7,7 @@ interface FriendsProps {
 
 const Friends = ({friend, className}: FriendsProps) => {
     return (
-        <img className={`w-full ${className}`} src={friend} alt="Friend" />
+        <img className={`w-full ${className}`} src={characters[friend].img} alt={characters[friend].img} />
     );
 };
 

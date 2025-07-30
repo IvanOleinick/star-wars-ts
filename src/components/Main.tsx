@@ -9,7 +9,7 @@ import ErrorPage from "./ErrorPage.tsx";
 const Main = () => {
     return (
         <Routes>
-            {['/', navItems[0]].map(path => <Route key={path} path={path} element={<Home/>}/>)}
+            {['/', navItems[0],`/${navItems[0]}/:heroId`].map(path => <Route key={path} path={path} element={<Home/>}/>)}
             <Route path={`/${navItems[1]}`} element={<AboutMe/>}/>
             <Route path={`/${navItems[1]}/:heroId`} element={<AboutMe/>}/>
             <Route path={`${navItems[2]}`} element={<StarWars/>}/>

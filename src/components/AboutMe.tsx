@@ -19,7 +19,7 @@ const AboutMe = () => {
 
         if (cached) {
             setAboutMe(cached)
-            changeHero(cached.name);
+            changeHero(key);
             return;
         }
 
