@@ -1,6 +1,6 @@
 export interface SwContextValue {
-    hero: string;
-    changeHero: (hero: string) => void;
+    hero?: string;
+    changeHero: (hero?: string) => void;
 }
 
 export interface Person {

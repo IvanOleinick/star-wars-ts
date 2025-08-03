@@ -1,9 +1,9 @@
 import {useContext} from "react";
 import {StarWarsContext} from "../utils/context.ts";
-import {characters} from "../utils/constants.ts";
+import {characters, defaultHero} from "../utils/constants.ts";
 
 const Hero = () => {
-    const {hero}=useContext(StarWarsContext);
+    const {hero = defaultHero}=useContext(StarWarsContext);
     console.log(hero);
     return (
         <section className="float-left w-1/4 me-4">

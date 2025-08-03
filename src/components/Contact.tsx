@@ -1,5 +1,5 @@
-import { baseUrl, loadCachedData, saveData, tag_base, tag_planets } from "../utils/constants.ts";
-import { useEffect, useState } from "react";
+import {baseUrl, loadCachedData, saveData, tag_base, tag_planets} from "../utils/constants.ts";
+import {useEffect, useState} from "react";
 import {useErrorPage} from "./hooks/useErrorPage.tsx";
 import ErrorPage from "./ErrorPage.tsx";
 
@@ -93,7 +93,7 @@ const Contact = () => {
                 </div>
             </form>
         </div>
-    ):<ErrorPage/>;
+    ) : <ErrorPage/>;
 };
 
 export default Contact;

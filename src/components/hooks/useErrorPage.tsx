@@ -9,8 +9,11 @@ export const useErrorPage = () => {
     const key = heroId ?? defaultHero
 
     useEffect(() => {
-        if (!(key in characters)) return;
-        changeHero(key)
+        if (!(key in characters)) {
+            changeHero();
+        }else {
+            changeHero(key);
+        }
     }, [key])
     return {
         isError: !(key in characters),

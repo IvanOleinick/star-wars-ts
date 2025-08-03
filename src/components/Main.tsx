@@ -12,10 +12,12 @@ const Main = () => {
         <Routes>
             {['/', navItems[0], `/${navItems[0]}/:heroId`].map(path => <Route key={path} path={path}
                                                                               element={<Home/>}/>)}
-            <Route path={`/${navItems[1]}`} element={<AboutMe/>}/>
-            <Route path={`/${navItems[1]}/:heroId`} element={<AboutMe/>}/>
-            <Route path={`/${navItems[2]}/:heroId`} element={<StarWars/>}/>
-            <Route path={`${navItems[3]}/:heroId`} element={<Contact/>}/>
+            {['/', navItems[0], `/${navItems[1]}/:heroId`].map(path => <Route key={path} path={path}
+                                                                              element={<AboutMe/>}/>)}
+            {['/', navItems[0], `/${navItems[2]}/:heroId`].map(path => <Route key={path} path={path}
+                                                                              element={<StarWars/>}/>)}
+            {['/', navItems[0], `/${navItems[3]}/:heroId`].map(path => <Route key={path} path={path}
+                                                                              element={<Contact/>}/>)}
             <Route path={'*'} element={<ErrorPage/>}/>
         </Routes>
     )
