@@ -14,6 +14,8 @@ export const useErrorPage = () => {
     }, [key])
     return {
         isError: !(key in characters),
-        key
+        key,
+        heroId,
+
     }
 }

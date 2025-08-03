@@ -1,52 +1,14 @@
-import {useParams} from "react-router";
-import {useContext, useEffect, useState} from "react";
-import {characters, saveData, loadCachedData, defaultHero} from "../utils/constants.ts";
-import type {Person} from "../utils/types.ts";
-import {StarWarsContext} from "../utils/context.ts";
 import ErrorPage from "./ErrorPage.tsx";
-
+import { useErrorPage } from "./hooks/useErrorPage.tsx";
+import { useHeroData } from "./hooks/useHeroData.tsx";
 
 const AboutMe = () => {
-    const {heroId} = useParams();
-    const key = heroId ?? defaultHero
-    const character = characters[key];
-    const [aboutMe, setAboutMe] = useState<Partial<Person>>({});
-    const {changeHero} = useContext(StarWarsContext);
+    const { isError, key } = useErrorPage();
+    const aboutMe = useHeroData(key);
 
+    if (isError) return <ErrorPage />;
 
-    useEffect(() => {
-        if (!(key in characters)) return;
-        changeHero(key)
-        const cached = loadCachedData<Person>(key);
-
-        if (cached) {
-            setAboutMe(cached)
-            return;
-        }
-
-        fetch(character.url)
-            .then(res => res.json())
-            .then(data => {
-                const person: Person = {
-                    name: data.name,
-                    gender: data.gender,
-                    skin_color: data.skin_color,
-                    hair_color: data.hair_color,
-                    eye_color: data.eye_color,
-                    height: data.height,
-                    mass: data.mass,
-                    birth_year: data.birth_year,
-                    image: character.img,
-                };
-                setAboutMe(person);
-                saveData<Person>(key, person, 30);
-
-            })
-            .catch(err => console.error(err));
-    }, [key]);
-
-
-    return (key in characters) ? (
+    return (
         <div className="flex justify-between items-start">
             <div className="text-[1.7em] text-justify leading-[1.6]">
                 {Object.entries(aboutMe).map(([k, v]) => {
@@ -57,7 +19,7 @@ const AboutMe = () => {
             </div>
             <img className="w-1/2" src={aboutMe.image} alt={aboutMe.name}/>
         </div>
-    ) : <ErrorPage/>;
+    );
 };
 
 export default AboutMe;
